@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="ERROR">
+<Properties>
+    <Property name="log-path">log</Property>
+</Properties>
+<Appenders>
+    <RollingFile name="error_file" fileName="${log-path}/error.log" filePattern="${log-path}/error-%d{yyyy-MM-dd}.log">
+        <PatternLayout>
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+        </PatternLayout>
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        </Policies>
+    </RollingFile>
+    <RollingFile name="info_file" fileName="${log-path}/info.log" filePattern="${log-path}/info-%d{yyyy-MM-dd}.log">
+        <PatternLayout>
+            <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n</pattern>
+        </PatternLayout>
+        <Policies>
+            <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+        </Policies>
+        <Filters>
+            <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+        </Filters>
+    </RollingFile>
+    <Console name="console" target="SYSTEM_OUT">
+        <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{10} - %msg%n"/>
+    </Console>
+</Appenders>
+<Loggers>
+    <Root level="TRACE">
+        <AppenderRef ref="error_file" level="ERROR"/>
+        <AppenderRef ref="info_file" level="INFO"/>
+        <AppenderRef ref="console"/>
+    </Root>
+    <Logger name="org" level="WARN"/>
+    <Logger name="akka" level="WARN"/>
+</Loggers>
+</Configuration>
